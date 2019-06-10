@@ -12,7 +12,7 @@ using std::endl;
 
 class bitset {
 
-    typedef unsigned int TYPE;
+    typedef uint32_t TYPE;
 
     size_t nb_bits_ = 0; /* Number of bits in the bitset */
     TYPE* bit_array = NULL; /* Array used to store the bits */
