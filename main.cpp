@@ -10,13 +10,10 @@ int main (int argc, char** argv) {
     // Create a bitset with 33 bits
     bitset BS (33), XS (33);
     
-    // BS._OR_(7);
-    // BS.print();
-
-    BS.set(0);
-    BS.set(1);
-    BS.print();
-    BS.value_print();
+    /*
+     * Testing bitset copy operation;
+    */
+   for (size_t i=0; i<)
 
     
 

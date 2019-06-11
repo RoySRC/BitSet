@@ -37,6 +37,7 @@ public:
 
     bool operator[] (size_t i);
     bool at (size_t i) const;
+    void reset () ;
 
     void print() const;
     void value_print() const;
