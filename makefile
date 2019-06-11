@@ -7,7 +7,7 @@ OPT_FLAGS=-O3
 all: bitset.o main.o
 	$(CC) $(CSTD_FLAGS) $(OPT_FLAGS) bitset.o main.o -o main
 
-main.o: main.cpp
+main.o: main.cpp bitset.o
 	$(CC) $(CSTD_FLAGS) $(OPT_FLAGS) -c ./main.cpp -o ./main.o
 
 bitset.o: bitset.h bitset.cpp
