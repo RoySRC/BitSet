@@ -2,4 +2,4 @@
 main
 *.o
 .vscode/
-BitSet.xcodeproj/
+*/BitSet.xcodeproj/

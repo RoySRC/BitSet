@@ -6,20 +6,31 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXFileReference section */
+		76EA7E4022B0440E00D938D8 /* bitset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitset.h; sourceTree = "<group>"; };
+		76EA7E4122B0440E00D938D8 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		76EA7E4222B0440E00D938D8 /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
+		76EA7E4322B0440E00D938D8 /* bitset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bitset.cpp; path = /Users/sajeeb/Desktop/BitSet/bitset.cpp; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
-		7611ED0922AF8F6300061054 = {
+		7611ED1422AF8FF600061054 = {
 			isa = PBXGroup;
 			children = (
+				76EA7E4322B0440E00D938D8 /* bitset.cpp */,
+				76EA7E4022B0440E00D938D8 /* bitset.h */,
+				76EA7E4122B0440E00D938D8 /* main.cpp */,
+				76EA7E4222B0440E00D938D8 /* makefile */,
 			);
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		7611ED0E22AF8F6300061054 /* BitSet */ = {
+		7611ED1922AF8FF600061054 /* BitSet */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "$(ACTION)";
-			buildConfigurationList = 7611ED1122AF8F6300061054 /* Build configuration list for PBXLegacyTarget "BitSet" */;
+			buildConfigurationList = 7611ED1C22AF8FF600061054 /* Build configuration list for PBXLegacyTarget "BitSet" */;
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/make;
@@ -32,35 +43,35 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXProject section */
-		7611ED0A22AF8F6300061054 /* Project object */ = {
+		7611ED1522AF8FF600061054 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = Orbiter;
 				TargetAttributes = {
-					7611ED0E22AF8F6300061054 = {
+					7611ED1922AF8FF600061054 = {
 						CreatedOnToolsVersion = 10.2.1;
 					};
 				};
 			};
-			buildConfigurationList = 7611ED0D22AF8F6300061054 /* Build configuration list for PBXProject "BitSet" */;
+			buildConfigurationList = 7611ED1822AF8FF600061054 /* Build configuration list for PBXProject "BitSet" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 7611ED0922AF8F6300061054;
+			mainGroup = 7611ED1422AF8FF600061054;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7611ED0E22AF8F6300061054 /* BitSet */,
+				7611ED1922AF8FF600061054 /* BitSet */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin XCBuildConfiguration section */
-		7611ED0F22AF8F6300061054 /* Debug */ = {
+		7611ED1A22AF8FF600061054 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -116,7 +127,7 @@
 			};
 			name = Debug;
 		};
-		7611ED1022AF8F6300061054 /* Release */ = {
+		7611ED1B22AF8FF600061054 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -165,7 +176,7 @@
 			};
 			name = Release;
 		};
-		7611ED1222AF8F6300061054 /* Debug */ = {
+		7611ED1D22AF8FF600061054 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -179,7 +190,7 @@
 			};
 			name = Debug;
 		};
-		7611ED1322AF8F6300061054 /* Release */ = {
+		7611ED1E22AF8FF600061054 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -193,25 +204,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7611ED0D22AF8F6300061054 /* Build configuration list for PBXProject "BitSet" */ = {
+		7611ED1822AF8FF600061054 /* Build configuration list for PBXProject "BitSet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7611ED0F22AF8F6300061054 /* Debug */,
-				7611ED1022AF8F6300061054 /* Release */,
+				7611ED1A22AF8FF600061054 /* Debug */,
+				7611ED1B22AF8FF600061054 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7611ED1122AF8F6300061054 /* Build configuration list for PBXLegacyTarget "BitSet" */ = {
+		7611ED1C22AF8FF600061054 /* Build configuration list for PBXLegacyTarget "BitSet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7611ED1222AF8F6300061054 /* Debug */,
-				7611ED1322AF8F6300061054 /* Release */,
+				7611ED1D22AF8FF600061054 /* Debug */,
+				7611ED1E22AF8FF600061054 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 7611ED0A22AF8F6300061054 /* Project object */;
+	rootObject = 7611ED1522AF8FF600061054 /* Project object */;
 }
