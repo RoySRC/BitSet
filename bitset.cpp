@@ -23,40 +23,37 @@ bitset::~bitset () {
 }
 
 void bitset::set (size_t i) {
-    i = nb_bits_ - 1 - i;
     bit_array[i/WORD_LEN] |= 1 << (i % WORD_LEN);
 }
 
 void bitset::unset (size_t i) {
-    i = nb_bits_ - 1 - i;
     bit_array[i/WORD_LEN] &= ~(1 << (i % WORD_LEN));
 }
 
 bool bitset::operator[] (size_t i) {
-    i = nb_bits_ - 1 - i;
     return bit_array[i/WORD_LEN] & (1 << (i % WORD_LEN));
 }
 
 bool bitset::at (size_t i) const  {
-    i = nb_bits_ - 1 - i;
     return bit_array[i/WORD_LEN] & (1 << (i % WORD_LEN));
 }
 
 void bitset::_OR_ (const TYPE rhs) {
-    cout << __FILE__ << ":" << __LINE__ << endl;
+    bit_array[0] |= rhs;
+}
 
-    auto offset = nb_bits_ - WORD_LEN;
-    for (size_t i=0; i<nb_bits_; ++i) {
-        
-        auto k = nb_bits_ - 1 - i;
-        auto l = ((1 << i) & rhs) << (k-1);
+void bitset::_OR_ (const bitset& rhs) {
 
-        bit_array[k/WORD_LEN] |= l;
+}
 
-        cout << l << " " << std::flush;
-        print();
-        
-    }
+template <typename t>
+void bitset::_OR_ (const t rhs) {
+
+}
+
+template <typename t>
+void bitset::_OR_ (const t rhs, size_t offset) {
+    
 }
 
 void bitset::print() const {

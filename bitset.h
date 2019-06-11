@@ -1,5 +1,13 @@
-// The rightmost entry is the least significant bit, while the
-// leftmost entry is the most significant bit.
+/*
+ *  This bitset class stores bits in a bit array. Element
+ *  zero of the bit array are the least significant bits,
+ *  while the last element of the bit array is the most
+ *  significant bit.
+ * 
+ *  The print function prints the bits of the elements of
+ *  the bit array reading from the last element of the bit 
+ *  array to the first.
+ */
 
 #include <iostream>
 #include <cstdlib>
@@ -34,6 +42,8 @@ public:
 
     void _OR_ (const TYPE rhs);
     void _OR_ (const bitset& rhs);
+    template <typename t> void _OR_ (const t rhs);
+    template <typename t> void _OR_ (const t rhs, size_t offset);
 
     bool operator[] (size_t i);
     bool at (size_t i) const;

@@ -8,14 +8,11 @@ using std::endl;
 int main (int argc, char** argv) {
 
     // Create a bitset with 33 bits
-    bitset BS (33), XS (33);
+    bitset BS (50), XS (33);
     
-    /*
-     * Testing bitset copy operation;
-    */
-   for (size_t i=0; i<)
-
     
+    BS._OR_(2344335538);
+    BS.value_print();
 
     // std::bitset<33> bs;
     // bs.set(0, true);
