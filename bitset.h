@@ -39,7 +39,7 @@ class bitset {
 
 public:
 
-    size_t _MAX_STACK_ALLOC_LIMIT = 1; /* bits */
+    size_t _MAX_STACK_ALLOC_LIMIT = 1024; /* bits */
 
     __forceinline__ bitset (size_t nb_bits) {
         nb_bits_ = nb_bits;
@@ -79,6 +79,11 @@ public:
         bit_array[i/WORD_LEN] |=  (1 << (i % WORD_LEN));
     }
 
+    template <typename T>
+    __forceinline__ void set_value (T val) { 
+        _OR_(val);
+    }
+
     __forceinline__ void unset (size_t i) {
         bit_array[i/WORD_LEN] &= ~(1 << (i % WORD_LEN));
     }
@@ -94,7 +99,8 @@ public:
     inline void _OR_ (const t& rhs) {
         const size_t NB_BITS_RHS = (sizeof(rhs)*8);
         const bool   SIGN_BIT_SET = signbit(rhs);
-        size_t EXT_IDX = 0;
+        size_t EXT_IDX = 0; // keep track of what elt. of the bitarray
+                            // to start sign extending from.
 
         if (NB_BITS_RHS % WORD_LEN == 0) { /* for {32, 64}%32 */
 
@@ -112,16 +118,64 @@ public:
         }
 
         if (SIGN_BIT_SET) {
-            if (EXT_IDX < bit_array_size)
-                for (size_t i=EXT_IDX; i<bit_array_size; ++i) {
-                    bit_array[i] |= TYPE(-1);
-                }
+            for (size_t i=EXT_IDX; i<bit_array_size; ++i) {
+                bit_array[i] |= TYPE(-1);
+            }
         }
 
         bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
         // bit_array[bit_array_size-1] &= TYPE(pow(2, nb_bits_ % WORD_LEN)-1);
 
     }    
+
+    template <typename t>
+    inline void _AND_ (const t& rhs) {
+        const size_t NB_BITS_RHS = (sizeof(rhs)*8);
+        const bool   SIGN_BIT_SET = signbit(rhs);
+        size_t EXT_IDX = 0;
+
+        if (NB_BITS_RHS % WORD_LEN == 0) { /* for {32, 64}%32 */
+
+            // k keeps track of the nb_bits of rhs processed
+            for (size_t i=0,k=0; i<bit_array_size && k<NB_BITS_RHS; ++i,k+=WORD_LEN) {
+                bit_array[i] &= rhs >> i*WORD_LEN;
+                EXT_IDX = i+1;
+            }
+
+        } else if (NB_BITS_RHS % WORD_LEN < WORD_LEN) {
+
+            bit_array[0] &= TYPE(rhs);
+            EXT_IDX = 1;
+
+        }
+
+        if (!SIGN_BIT_SET) {
+            
+            for (size_t i=EXT_IDX; i<bit_array_size; ++i) 
+                bit_array[i] &= TYPE(0);
+                
+        }
+
+        bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
+        // bit_array[bit_array_size-1] &= TYPE(pow(2, nb_bits_ % WORD_LEN)-1);
+
+    }
+
+    template <typename T>
+    inline void _NOT_ (const T& rhs) {
+        cout << __FILE__ << ":" << __LINE__ << ":";
+        cout <<  "Function needs implementation" << endl;
+    }
+
+    inline void lshift (const size_t val) {
+        cout << __FILE__ << ":" << __LINE__ << ":";
+        cout <<  "Function needs implementation" << endl;
+    }
+
+    inline void rshift (const size_t val) {
+        cout << __FILE__ << ":" << __LINE__ << ":";
+        cout <<  "Function needs implementation" << endl;
+    } 
 
     /*
      * Accessors
@@ -145,6 +199,10 @@ public:
 
 };
 
+/*
+ * Template specializations
+ */
+
 template <>
 inline void bitset::_OR_ (const bitset& rhs) {
     if (rhs.nb_bits_ == nb_bits_) {
@@ -158,11 +216,45 @@ inline void bitset::_OR_ (const bitset& rhs) {
         for (size_t i=0; i<bit_array_size; ++i) { 
             bit_array[i] |= rhs.bit_array[i];
         }
-
-        size_t _ = TYPE(-1) >> (rhs.nb_bits_ % nb_bits_);   
-        bit_array[bit_array_size-1] &= _;
+  
+        bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
 
     } else if (nb_bits_ > rhs.nb_bits_) {
+
+        for (size_t i=0; i<rhs.bit_array_size; ++i) {
+            bit_array[i] |= rhs.bit_array[i];
+        }
+
+    } 
+}
+
+template <>
+inline void bitset::_OR_ (const double& rhs) {
+    cout << __FILE__ << ":" << __LINE__ << ":function not implemented" << endl;
+}
+
+template <>
+inline void bitset::_AND_ (const bitset& rhs) {
+    cout << __FILE__ << ":" << __LINE__ << endl;
+    if (rhs.nb_bits_ == nb_bits_) {
+        
+        for (size_t i=0; i<bit_array_size; ++i) {
+            bit_array[i] &= rhs.bit_array[i];
+        }
+    
+    } else if (nb_bits_ < rhs.nb_bits_) {
+        
+        for (size_t i=0; i<bit_array_size; ++i) { 
+            bit_array[i] &= rhs.bit_array[i];
+        }
+  
+        bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
+
+    } else if (nb_bits_ > rhs.nb_bits_) {
+
+        for (size_t i=0; i<rhs.bit_array_size; ++i) {
+            bit_array[i] &= rhs.bit_array[i];
+        }
 
     } 
 }

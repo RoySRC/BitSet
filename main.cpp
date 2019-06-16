@@ -6,6 +6,8 @@ using std::cout;
 using std::endl;
 
 #define __INDENT__(n) {for (size_t i=0; i<n; ++i) cout << " ";}
+#define __PRINT_LINE__(n) {for (size_t i=0; i<n; ++i) cout << "-"; printf("\n");}
+#define print_bitset(bs) {std::cout << bs.to_string<char,std::string::traits_type,std::string::allocator_type>() << '\n';}
 
 bool check_bitset_or () {
     bitset B1 (48), B2 (48); // B1 == B2
@@ -74,7 +76,118 @@ bool check_bitset_or () {
     return true;
 }
 
+void test_AND_function () {
+
+
+
+}
+
+
+
+
+
 int main (int argc, char** argv) {
+
+    /*-----------------------------------------------------------------
+     * Values to test the bitset on
+    /*-----------------------------------------------------------------*/ 
+    // 8 bit integers
+    int8_t val_int8_min = -128;
+    int8_t val_int8_max = 127;
+    uint8_t val_uint8_min = 0;
+    uint8_t val_uint8_max = 255;
+    
+    // 16 bit integers
+    int16_t val_int16_max = 32767;
+    int16_t val_int16_min = -32768;
+    uint16_t val_uint16_max = 65535;
+    uint16_t val_uint16_min = 0;
+
+    // 32 bit integers
+    int32_t val_int32_max = 2147483647;
+    int32_t val_int32_min = -2147483648;
+    uint32_t val_uint32_max = 4294967295;
+    uint32_t val_uint32_min = 0;
+
+    // 64 bit integers
+    int64_t val_int64_max = 9223372036854775807;
+    int64_t val_int64_min = -9223372036854775808;
+    uint64_t val_uint64_max = 18446744073709551615;
+    uint64_t val_uint64_min = 0;
+    /*-----------------------------------------------------------------*/
+
+
+
+
+// #define __BLOCK__ 0  // AND
+// #define __BLOCK__ 1  // OR
+// #define __BLOCK__ 2  // EQUALITY_TEST
+
+#if __BLOCK__ == 1
+
+    // Create a bitset with 33 bits
+    bitset BS (34), XS (70);
+
+    {
+        BS._OR_(23563422);
+        XS._OR_(4234237589272458);
+
+        __INDENT__(36);
+        BS.print();
+        XS.print();
+
+        __PRINT_LINE__(70);
+
+        __INDENT__(36);
+        BS._OR_ (XS);
+        BS.print();
+    }
+
+    cout << endl;
+
+
+    {
+        __INDENT__(36);
+        BS.print();
+        XS.print();
+        XS._OR_(BS);
+        __PRINT_LINE__(70);
+        XS.print();
+    }
+
+
+#elif __BLOCK__ == 0
+
+    // Create a bitset with 33 bits
+    bitset BS (34), XS (34);
+
+    {
+        cout << "Original Data" << endl;
+        cout << "BS: ";
+        BS._OR_(-1);
+        BS.print();
+        cout << "XS: ";
+        XS._OR_(-1);
+        XS.print();
+
+        
+
+    }
+
+    cout << endl;
+
+
+    {
+        auto val = uint32_t(2147483647);
+        bitset tmp(BS.size()); tmp.set_value(val); tmp.print();
+        BS.print();
+
+        BS._AND_(val);
+        __PRINT_LINE__(34);
+        BS.print();
+    }    
+
+#elif __BLOCK__ == 2
 
     #define BITSET_SIZE  70
     typedef std::bitset<BITSET_SIZE> BITSET;
@@ -87,17 +200,23 @@ int main (int argc, char** argv) {
     BITSET bs;
 
     auto val = uint64_t(18446744073709551615);
-    BS._OR_ (val);
-    bs |= val;
 
+    BS._OR_ (-1);
+    bs |= -1;
+    
+    cout << "BS: ";
+    BS.print();
+    cout << "bs: ";
+    print_bitset(bs);
 
-    std::string mystring =
-    bs.to_string<char,std::string::traits_type,std::string::allocator_type>();
-    std::cout << "bs: " << mystring << '\n';
+    BS._AND_ (val);
+    bs &= val;
+
 
     cout << "BS: ";
     BS.print();
-
+    cout << "bs: ";
+    print_bitset(bs);
 
 
     for (size_t i=0,r=1; i<BITSET_SIZE; ++i) {
@@ -119,4 +238,5 @@ int main (int argc, char** argv) {
         }
     }
 
+#endif
 }
