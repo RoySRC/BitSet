@@ -20,8 +20,3 @@ void bitset::value_print() const {
     }
     printf("]\n");
 }
-
-bitset& bitset::operator >> (const size_t i) {
-    return *this;
-}
-

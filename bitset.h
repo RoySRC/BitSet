@@ -31,7 +31,6 @@ using std::endl;
 }
 #define _print_bits_(t) __print__bits__main__(t, __LINE__)
 
-
 #define __forceinline__ __attribute__((always_inline))
 
 
@@ -49,7 +48,7 @@ class bitset {
 
 public:
 
-    size_t _MAX_STACK_ALLOC_LIMIT = WORD_LEN; /* bits */
+    size_t _MAX_STACK_ALLOC_LIMIT = 0; /* bits */
 
     __forceinline__ bitset (size_t nb_bits) {
         nb_bits_ = nb_bits;
@@ -85,25 +84,63 @@ public:
     }
 
 
-    __forceinline__ void set (size_t i) { 
+    inline void set (size_t i) { 
         bit_array[i/WORD_LEN] |=  (1 << (i % WORD_LEN));
     }
 
     template <typename T>
-    __forceinline__ void set_value (T val) { 
+    inline void set_value (T val) { 
         _OR_(val);
     }
 
-    __forceinline__ void unset (size_t i) {
+    inline void unset (size_t i) {
         bit_array[i/WORD_LEN] &= ~(1 << (i % WORD_LEN));
     }
     
-    __forceinline__ void reset () {
+    inline void reset () {
         memset(bit_array, 0, sizeof(TYPE)*bit_array_size);
     }
 
 
-    bitset& operator >> (const size_t i);
+    /* ----------------------------------------------------------------- */
+    /*  Overloaded Operators                                             */
+    /* ----------------------------------------------------------------- */
+    
+    
+    inline bitset& operator>> (const size_t i) {
+        return *this;
+    }
+
+    inline bitset& operator<< (const size_t i) {
+        return *this;
+    }
+
+    template <typename T>
+    inline bitset& operator>>= (const T& rhs) {
+        printf("Function operator>>= needs implementation in %s : %d \n", __FILE__, __LINE__);
+        return *this;
+    }
+
+    template <typename T>
+    inline bitset& operator<<= (const T& rhs) {
+        printf("Function operator<<= needs implementation in %s : %d \n", __FILE__, __LINE__);
+        return *this;
+    }
+    
+    template <typename T>
+    inline bitset& operator= (const T& rhs) {
+        reset();
+        _OR_(rhs);
+        return *this;
+    }
+
+    template <typename T>
+    inline bitset& operator== (const T& rhs) {
+        printf("Function operator== needs implementation in %s : %d \n", __FILE__, __LINE__);
+        return *this;
+    }
+
+    /* ----------------------------------------------------------------- */
 
     template <typename t>
     inline void _OR_ (const t& rhs) {
@@ -190,11 +227,11 @@ public:
      * Accessors
      */
 
-    __forceinline__ bool operator[] (const size_t i) const {
+    inline bool operator[] (const size_t i) const {
         return at(i);
     }
     
-    __forceinline__ bool at (const size_t i) const {
+    inline bool at (const size_t i) const {
         return bit_array[i/WORD_LEN] & (1 << (i % WORD_LEN));
     }
 
@@ -202,8 +239,8 @@ public:
     void value_print() const;
 
     // Getters
-    __forceinline__ size_t size() const { return nb_bits_; }
-    __forceinline__ size_t len()  const { return size();   }
+    inline size_t size() const { return nb_bits_; }
+    inline size_t len()  const { return size();   }
 
 
 };
@@ -214,27 +251,34 @@ public:
 
 template <>
 inline void bitset::_OR_ (const bitset& rhs) {
-    if (rhs.nb_bits_ == nb_bits_) {
+    // if (rhs.nb_bits_ == nb_bits_) {
         
-        for (size_t i=0; i<bit_array_size; ++i) {
-            bit_array[i] |= rhs.bit_array[i];
-        }
+    //     for (size_t i=0; i<bit_array_size; ++i) {
+    //         bit_array[i] |= rhs.bit_array[i];
+    //     }
     
-    } else if (nb_bits_ < rhs.nb_bits_) {
+    // } else if (nb_bits_ < rhs.nb_bits_) {
         
-        for (size_t i=0; i<bit_array_size; ++i) { 
-            bit_array[i] |= rhs.bit_array[i];
-        }
+    //     for (size_t i=0; i<bit_array_size; ++i) { 
+    //         bit_array[i] |= rhs.bit_array[i];
+    //     }
   
-        bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
+    //     bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
 
-    } else if (nb_bits_ > rhs.nb_bits_) {
+    // } else if (nb_bits_ > rhs.nb_bits_) {
 
-        for (size_t i=0; i<rhs.bit_array_size; ++i) {
-            bit_array[i] |= rhs.bit_array[i];
-        }
+    //     for (size_t i=0; i<rhs.bit_array_size; ++i) {
+    //         bit_array[i] |= rhs.bit_array[i];
+    //     }
 
-    } 
+    // }
+    size_t l = (nb_bits_ <= rhs.nb_bits_) ? bit_array_size : rhs.bit_array_size;
+
+    for (size_t i=0; i<l; ++i) { 
+        bit_array[i] |= rhs.bit_array[i];
+    }
+
+    bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN)); 
 }
 
 template <>
