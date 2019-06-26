@@ -22,6 +22,16 @@ using std::endl;
 #define _BITSET_H_
 
 
+#define __print__bits__main__(t, l) {\
+    size_t i##l=0,k##l = sizeof(t)*8; \
+    for (; i##l < k##l ; ++i##l) {\
+        printf("%d",bool(t & (1 << (k##l -1 - i##l))));\
+    }\
+    printf("\n");\
+}
+#define _print_bits_(t) __print__bits__main__(t, __LINE__)
+
+
 #define __forceinline__ __attribute__((always_inline))
 
 
@@ -39,7 +49,7 @@ class bitset {
 
 public:
 
-    size_t _MAX_STACK_ALLOC_LIMIT = 1024; /* bits */
+    size_t _MAX_STACK_ALLOC_LIMIT = WORD_LEN; /* bits */
 
     __forceinline__ bitset (size_t nb_bits) {
         nb_bits_ = nb_bits;
@@ -161,10 +171,9 @@ public:
 
     }
 
-    template <typename T>
-    inline void _NOT_ (const T& rhs) {
-        cout << __FILE__ << ":" << __LINE__ << ":";
-        cout <<  "Function needs implementation" << endl;
+    inline void _NOT_ () {
+        for (size_t i=0; i<bit_array_size; ++i) 
+            bit_array[i] = ~bit_array[i];
     }
 
     inline void lshift (const size_t val) {
