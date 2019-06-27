@@ -1,7 +1,9 @@
 #include "bitset.h"
 #include "bitset_test_values.h"
+#include "ansi_color.h"
 
 #include <iostream>
+#include <iomanip>
 using std::cout;
 using std::endl;
 
@@ -9,36 +11,98 @@ using std::endl;
 #define _BITSET_NOT_OPERATOR_TEST_H_
 
 #define randint(min, max) rand() % max + min
+#define NEW_LINE cout << endl;
+
+template <typename T>
+void test_bitset_not_operator_helper(T val) {
+    size_t nbit = sizeof(T)*8;
+    cout << "   Testing with " << std::right << std::setw(3) << nbit << " bits." ;
+    cout << std::right << std::setw(5) << "[" ;
+    cout << std::right << std::setw(20) << std::to_string(val);
+    cout << std::left << std::setw(5) << "]";
+    
 
 
-void test_bitset_not_operator() {
-    // Test 8 bit ints
     bool all_pass = true;
     for (size_t bitSize=1; bitSize<8192; ++bitSize) {
-        bitset bs (bitSize);
+        bitset bs1 (bitSize), bs2 (bitSize);
         
-        int8_t val = randint(val_int8_min, val_int8_max);
-        int8_t res = ~val;
-        
-        bs.set_value(val);
-        bs._NOT_();
+        bs1.set_value(val);
+        bs2.set_value(val);
+        bs1._NOT_();
 
-        for (size_t i=0, l=(bitSize<sizeof(int8_t)*8)?bitSize:sizeof(int8_t)*8; i<l; ++i) {
-            bool bit_at_i = res & ( (int8_t)1 << i );
-            if (bs[i] != bit_at_i) {
+        size_t l = ( bitSize < sizeof(T) * 8 ) ? bitSize : sizeof(T) * 8;
+
+        for (size_t i=0; i<l; ++i) {
+            if (bs1[i] != !bs2[i]) {
                 all_pass = false;
-                cout << "Testing with bitSize=" << 8192;
+                cout << BRIGHT_RED;
+                cout << endl << "\t";
+                cout << "Testing with " << bitSize << " bit(s)";
                 cout << " gave the following:" << endl;
-                cout << "Actual: ";
-                _print_bits_(res);
-                cout << "Got   : ";
-                bs.print();
+                cout << "\tExpected: ";
+                bs2.print();
+                cout << "\tReceived: ";
+                bs1.print();
+                cout << RESET_COLOR_SCHEME;
                 break;
             }
         }
+
+        if (!all_pass) {
+            cout << endl ;
+            cout << "\tFailure encountered, aborting test." ;
+            break;
+        }
     }
-    if (all_pass) cout << "All tests passed!" << endl;
-    else cout << "Some tests failed." << endl;
+    
+    
+    if (all_pass) {
+        cout << BRIGHT_GREEN ;
+        cout << "[ All tests passed! ]";
+    } else {
+        cout << BRIGHT_RED ;
+        cout << "[ Some tests failed. ]";
+    }
+    cout << RESET_COLOR_SCHEME << endl;
+}
+
+
+void test_bitset_not_operator() {
+    NEW_LINE;
+
+    cout << "Testing bitset NOT logical operator" << endl;
+    cout << "---------------------------------------------------------------------------------" << endl;
+
+    test_bitset_not_operator_helper(val_int8_min);
+    test_bitset_not_operator_helper(val_int8_max);
+    test_bitset_not_operator_helper(val_uint8_min);
+    test_bitset_not_operator_helper(val_uint8_max);
+
+    cout << endl;
+
+    test_bitset_not_operator_helper(val_int16_min);
+    test_bitset_not_operator_helper(val_int16_max);
+    test_bitset_not_operator_helper(val_uint16_min);
+    test_bitset_not_operator_helper(val_uint16_max);
+
+    cout << endl;
+
+    test_bitset_not_operator_helper(val_int32_min);
+    test_bitset_not_operator_helper(val_int32_max);
+    test_bitset_not_operator_helper(val_uint32_min);
+    test_bitset_not_operator_helper(val_uint32_max);
+
+    cout << endl;
+
+    test_bitset_not_operator_helper(val_int64_min);
+    test_bitset_not_operator_helper(val_int64_max);
+    test_bitset_not_operator_helper(val_uint64_min);
+    test_bitset_not_operator_helper(val_uint64_max);
+
+    cout << "---------------------------------------------------------------------------------" << endl;
+
+    NEW_LINE;
 }
 
 

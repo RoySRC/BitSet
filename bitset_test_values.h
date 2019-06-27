@@ -4,7 +4,7 @@
 
 /*-----------------------------------------------------------------
  * Values to test the bitset on
-/*-----------------------------------------------------------------*/ 
+ *-----------------------------------------------------------------*/ 
 // 8 bit integers
 int8_t val_int8_min = -128;
 int8_t val_int8_max = 127;
@@ -25,8 +25,8 @@ uint32_t val_uint32_min = 0;
 
 // 64 bit integers
 int64_t val_int64_max = 9223372036854775807;
-int64_t val_int64_min = -9223372036854775808;
-uint64_t val_uint64_max = 18446744073709551615;
+int64_t val_int64_min = std::numeric_limits<int64_t>::min();
+uint64_t val_uint64_max = std::numeric_limits<uint64_t>::max();
 uint64_t val_uint64_min = 0;
 /*-----------------------------------------------------------------*/
 
