@@ -1,10 +1,12 @@
+#include <limits>
+
 #ifndef _BITSET_TEST_VALUES_H_
 #define _BITSET_TEST_VALUES_H_
 
 
 /*-----------------------------------------------------------------
  * Values to test the bitset on
- *-----------------------------------------------------------------*/ 
+ *-----------------------------------------------------------------*/
 // 8 bit integers
 int8_t val_int8_min = -128;
 int8_t val_int8_max = 127;

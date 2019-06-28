@@ -19,8 +19,8 @@ int main (int argc, char** argv) {
     // Testing the NOT operator
     // test_bitset_not_operator();
 
-    bitset bs (33);
-    bs.set_value(3363235839);
+    bitset bs (48);
+    bs.set_value(202335968067588);
     bs.print();
 
     bs.lshift(3);

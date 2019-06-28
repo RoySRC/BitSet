@@ -3,9 +3,9 @@
  *  zero of the bit array are the least significant bits,
  *  while the last element of the bit array is the most
  *  significant bit.
- * 
+ *
  *  The print function prints the bits of the elements of
- *  the bit array reading from the last element of the bit 
+ *  the bit array reading from the last element of the bit
  *  array to the first.
  */
 
@@ -48,7 +48,7 @@ class bitset {
 
 public:
 
-    size_t _MAX_STACK_ALLOC_LIMIT = 0; /* bits */
+    size_t _MAX_STACK_ALLOC_LIMIT = 32; /* bits */
 
     __forceinline__ bitset (size_t nb_bits) {
         nb_bits_ = nb_bits;
@@ -84,19 +84,19 @@ public:
     }
 
 
-    inline void set (size_t i) { 
+    inline void set (size_t i) {
         bit_array[i/WORD_LEN] |=  (1 << (i % WORD_LEN));
     }
 
     template <typename T>
-    inline void set_value (T val) { 
+    inline void set_value (T val) {
         _OR_(val);
     }
 
     inline void unset (size_t i) {
         bit_array[i/WORD_LEN] &= ~(1 << (i % WORD_LEN));
     }
-    
+
     inline void reset () {
         memset(bit_array, 0, sizeof(TYPE)*bit_array_size);
     }
@@ -105,10 +105,10 @@ public:
     /* ----------------------------------------------------------------- */
     /*  Overloaded Operators                                             */
     /* ----------------------------------------------------------------- */
-    
-    
+
+
     inline bitset& operator>> (const size_t i) {
-        
+
         return *this;
     }
 
@@ -127,7 +127,7 @@ public:
         printf("Function operator<<= needs implementation in %s : %d \n", __FILE__, __LINE__);
         return *this;
     }
-    
+
     template <typename T>
     inline bitset& operator= (const T& rhs) {
         reset();
@@ -135,13 +135,32 @@ public:
         return *this;
     }
 
+    /* is strictly equal to */
     template <typename T>
-    inline bitset& operator== (const T& rhs) {
-        printf("Function operator== needs implementation in %s : %d \n", __FILE__, __LINE__);
-        return *this;
+    inline bool operator== (const T& rhs) {
+        const size_t NB_BITS_RHS = sizeof(rhs)*8;
+
+        if (NB_BITS_RHS != nb_bits_) return false;
+
+        for (size_t i=0; i<NB_BITS_RHS; ++i) {
+            if (at(i) != bool(rhs & (T(1) << i)))
+                return false;
+        }
+
+        return true;
     }
 
     /* ----------------------------------------------------------------- */
+
+    /* Check equality upto a certain number of bits */
+    template <typename T>
+    inline bool isEqualTo (const T& rhs, size_t len /* bits */) {
+        for (size_t i=0; i<len; ++i) {
+            if (at(i) != bool(rhs & (T(1) << i)))
+                return false;
+        }
+        return true;
+    }
 
     template <typename t>
     inline void _OR_ (const t& rhs) {
@@ -174,7 +193,7 @@ public:
         bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
         // bit_array[bit_array_size-1] &= TYPE(pow(2, nb_bits_ % WORD_LEN)-1);
 
-    }    
+    }
 
     template <typename t>
     inline void _AND_ (const t& rhs) {
@@ -198,10 +217,10 @@ public:
         }
 
         if (!SIGN_BIT_SET) {
-            
-            for (size_t i=EXT_IDX; i<bit_array_size; ++i) 
+
+            for (size_t i=EXT_IDX; i<bit_array_size; ++i)
                 bit_array[i] &= TYPE(0);
-                
+
         }
 
         bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
@@ -210,7 +229,7 @@ public:
     }
 
     inline void _NOT_ () {
-        for (size_t i=0; i<bit_array_size; ++i) 
+        for (size_t i=0; i<bit_array_size; ++i)
             bit_array[i] = ~bit_array[i];
     }
 
@@ -224,13 +243,13 @@ public:
             bit_array[i] = result;
         }
 
-        bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));        
+        bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
     }
 
     inline void rshift (const size_t val) {
         cout << __FILE__ << ":" << __LINE__ << ":";
         cout <<  "Function needs implementation" << endl;
-    } 
+    }
 
     /*
      * Accessors
@@ -239,7 +258,7 @@ public:
     inline bool operator[] (const size_t i) const {
         return at(i);
     }
-    
+
     inline bool at (const size_t i) const {
         return bit_array[i/WORD_LEN] & (1 << (i % WORD_LEN));
     }
@@ -260,34 +279,13 @@ public:
 
 template <>
 inline void bitset::_OR_ (const bitset& rhs) {
-    // if (rhs.nb_bits_ == nb_bits_) {
-        
-    //     for (size_t i=0; i<bit_array_size; ++i) {
-    //         bit_array[i] |= rhs.bit_array[i];
-    //     }
-    
-    // } else if (nb_bits_ < rhs.nb_bits_) {
-        
-    //     for (size_t i=0; i<bit_array_size; ++i) { 
-    //         bit_array[i] |= rhs.bit_array[i];
-    //     }
-  
-    //     bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
-
-    // } else if (nb_bits_ > rhs.nb_bits_) {
-
-    //     for (size_t i=0; i<rhs.bit_array_size; ++i) {
-    //         bit_array[i] |= rhs.bit_array[i];
-    //     }
-
-    // }
     size_t l = (nb_bits_ <= rhs.nb_bits_) ? bit_array_size : rhs.bit_array_size;
 
-    for (size_t i=0; i<l; ++i) { 
+    for (size_t i=0; i<l; ++i) {
         bit_array[i] |= rhs.bit_array[i];
     }
 
-    bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN)); 
+    bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
 }
 
 template <>
@@ -299,33 +297,35 @@ template <>
 inline void bitset::_AND_ (const bitset& rhs) {
     size_t l = (nb_bits_ <= rhs.nb_bits_) ? bit_array_size : rhs.bit_array_size;
 
-    for (size_t i=0; i<l; ++i) { 
+    for (size_t i=0; i<l; ++i) {
         bit_array[i] &= rhs.bit_array[i];
     }
 
     bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
+}
 
-    // if (rhs.nb_bits_ == nb_bits_) {
-        
-    //     for (size_t i=0; i<bit_array_size; ++i) {
-    //         bit_array[i] &= rhs.bit_array[i];
-    //     }
-    
-    // } else if (nb_bits_ < rhs.nb_bits_) {
-        
-    //     for (size_t i=0; i<bit_array_size; ++i) { 
-    //         bit_array[i] &= rhs.bit_array[i];
-    //     }
-  
-    //     bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
+/* Check equality upto a certain number of bits for bitset as the RHS */
+template <>
+inline bool bitset::isEqualTo (const bitset& rhs, size_t len /* bits */) {
+    for (size_t i=0; i<len; ++i) {
+        if (at(i) != rhs[i])
+            return false;
+    }
+    return true;
+}
 
-    // } else if (nb_bits_ > rhs.nb_bits_) {
+template <>
+inline bool bitset::operator== (const bitset& rhs) {
+    const size_t NB_BITS_RHS = rhs.nb_bits_;
 
-    //     for (size_t i=0; i<rhs.bit_array_size; ++i) {
-    //         bit_array[i] &= rhs.bit_array[i];
-    //     }
+    if (NB_BITS_RHS != nb_bits_) return false;
 
-    // } 
+    for (size_t i=0; i<NB_BITS_RHS; ++i) {
+        if (at(i) != rhs.at(i))
+            return false;
+    }
+
+    return true;
 }
 
 #endif
