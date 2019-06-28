@@ -17,5 +17,12 @@ using std::endl;
 
 int main (int argc, char** argv) {
     // Testing the NOT operator
-    test_bitset_not_operator();
+    // test_bitset_not_operator();
+
+    bitset bs (33);
+    bs.set_value(3363235839);
+    bs.print();
+
+    bs.lshift(3);
+    bs.print();
 }
