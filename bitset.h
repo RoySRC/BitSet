@@ -108,6 +108,7 @@ public:
     
     
     inline bitset& operator>> (const size_t i) {
+        
         return *this;
     }
 
@@ -296,28 +297,35 @@ inline void bitset::_OR_ (const double& rhs) {
 
 template <>
 inline void bitset::_AND_ (const bitset& rhs) {
-    cout << __FILE__ << ":" << __LINE__ << endl;
-    if (rhs.nb_bits_ == nb_bits_) {
+    size_t l = (nb_bits_ <= rhs.nb_bits_) ? bit_array_size : rhs.bit_array_size;
+
+    for (size_t i=0; i<l; ++i) { 
+        bit_array[i] &= rhs.bit_array[i];
+    }
+
+    bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
+
+    // if (rhs.nb_bits_ == nb_bits_) {
         
-        for (size_t i=0; i<bit_array_size; ++i) {
-            bit_array[i] &= rhs.bit_array[i];
-        }
+    //     for (size_t i=0; i<bit_array_size; ++i) {
+    //         bit_array[i] &= rhs.bit_array[i];
+    //     }
     
-    } else if (nb_bits_ < rhs.nb_bits_) {
+    // } else if (nb_bits_ < rhs.nb_bits_) {
         
-        for (size_t i=0; i<bit_array_size; ++i) { 
-            bit_array[i] &= rhs.bit_array[i];
-        }
+    //     for (size_t i=0; i<bit_array_size; ++i) { 
+    //         bit_array[i] &= rhs.bit_array[i];
+    //     }
   
-        bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
+    //     bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
 
-    } else if (nb_bits_ > rhs.nb_bits_) {
+    // } else if (nb_bits_ > rhs.nb_bits_) {
 
-        for (size_t i=0; i<rhs.bit_array_size; ++i) {
-            bit_array[i] &= rhs.bit_array[i];
-        }
+    //     for (size_t i=0; i<rhs.bit_array_size; ++i) {
+    //         bit_array[i] &= rhs.bit_array[i];
+    //     }
 
-    } 
+    // } 
 }
 
 #endif
