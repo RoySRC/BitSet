@@ -13,16 +13,11 @@ using std::endl;
 
 #include "bitset_not_operator_test.h"
 
-
-
-int main (int argc, char** argv) {
-    // Testing the NOT operator
-    // test_bitset_not_operator();
-
+void  test_rshift () {
     bitset bs (64), org (64);
     bs.set_value(202335968067588);
     org.set_value(202335968067588);
-    
+
     size_t N = 3;
 
     bs.rshift(N);
@@ -44,4 +39,17 @@ int main (int argc, char** argv) {
     } else {
         cout << BRIGHT_RED << "right shift failed!" << RESET_COLOR_SCHEME;
     } cout << endl;
+}
+
+int main (int argc, char** argv) {
+    bitset bs (64), org (64);
+    auto val = 202335968067588;
+    bs.set_value(val);
+    org.set_value(val);
+
+    org.print();
+    bs.twos_complement();
+    bs.print();
+
+    cout << bs.to_int64() <<endl;
 }

@@ -101,6 +101,27 @@ public:
         memset(bit_array, 0, sizeof(TYPE)*bit_array_size);
     }
 
+    inline void twos_complement (void) {
+        _NOT_();
+        for (size_t i=0; i<bit_array_size; ++i) {
+            bit_array[i] += 1;
+            if (bit_array[i] != 0) break;
+        }
+    }
+
+    inline int8_t   to_int8   ();
+    inline uint8_t  to_uint8  ();
+
+    inline int16_t  to_int16  ();
+    inline uint16_t to_uint16 ();
+
+    inline int32_t  to_int32  ();
+    inline uint32_t to_uint32 ();
+
+    inline int64_t  to_int64  () {
+    }
+
+    inline uint64_t to_uint64 ();
 
     /* ----------------------------------------------------------------- */
     /*  Overloaded Operators                                             */
