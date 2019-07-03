@@ -246,9 +246,20 @@ public:
         bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
     }
 
-    inline void rshift (const size_t val) {
-        cout << __FILE__ << ":" << __LINE__ << ":";
-        cout <<  "Function needs implementation" << endl;
+    inline void rshift (const size_t N) {
+        if (N == 0) return;
+
+        TYPE truncated_bits = 0;
+        bit_array[0] >>= N;
+
+        for (size_t i=1; i<bit_array_size; ++i) {
+            truncated_bits = (TYPE(-1) >> (WORD_LEN-N)) & bit_array[i];
+            truncated_bits <<= (WORD_LEN-N);
+            bit_array[i-1] |= truncated_bits;
+            bit_array[i] >>= N;
+        }
+
+        bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
     }
 
     /*

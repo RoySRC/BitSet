@@ -19,10 +19,29 @@ int main (int argc, char** argv) {
     // Testing the NOT operator
     // test_bitset_not_operator();
 
-    bitset bs (48);
+    bitset bs (64), org (64);
     bs.set_value(202335968067588);
+    org.set_value(202335968067588);
+    
+    size_t N = 3;
+
+    bs.rshift(N);
+
+    org.print();
     bs.print();
 
-    bs.lshift(3);
-    bs.print();
+    // automatic shift checking
+    bool pass = true;
+    for (size_t i=N; i<org.size(); ++i) {
+        if (org[i] != bs[i-N]){
+            cout << org[i] << " != " << bs[i-N] << endl;
+            pass = false;
+            break;
+        }
+    }
+    if (pass) {
+        cout << BRIGHT_GREEN << "right shift passed!" << RESET_COLOR_SCHEME;
+    } else {
+        cout << BRIGHT_RED << "right shift failed!" << RESET_COLOR_SCHEME;
+    } cout << endl;
 }
