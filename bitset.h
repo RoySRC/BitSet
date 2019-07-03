@@ -25,7 +25,7 @@ using std::endl;
 #define __print__bits__main__(t, l) {\
     size_t i##l=0,k##l = sizeof(t)*8; \
     for (; i##l < k##l ; ++i##l) {\
-        printf("%d",bool(t & (1 << (k##l -1 - i##l))));\
+        printf("%d",bool(t & (1UL << (k##l -1 - i##l))));\
     }\
     printf("\n");\
 }
@@ -109,19 +109,16 @@ public:
         }
     }
 
-    inline int8_t   to_int8   ();
-    inline uint8_t  to_uint8  ();
+    /* Convert to builtin integer types */
+    inline int8_t   to_int8   () { return int8_t(bit_array[0]);                        }
+    inline uint8_t  to_uint8  () { return uint8_t(bit_array[0]);                       }
+    inline int16_t  to_int16  () { return int16_t(bit_array[0]);                       }
+    inline uint16_t to_uint16 () { return uint16_t(bit_array[0]);                      }
+    inline int32_t  to_int32  () { return int32_t(bit_array[0]);                       }
+    inline uint32_t to_uint32 () { return uint32_t(bit_array[0]);                      }
+    inline int64_t  to_int64  () { return int64_t(bit_array[1]) << 32 | bit_array[0];  }
+    inline uint64_t to_uint64 () { return uint64_t(bit_array[1]) << 32 | bit_array[0]; }
 
-    inline int16_t  to_int16  ();
-    inline uint16_t to_uint16 ();
-
-    inline int32_t  to_int32  ();
-    inline uint32_t to_uint32 ();
-
-    inline int64_t  to_int64  () {
-    }
-
-    inline uint64_t to_uint64 ();
 
     /* ----------------------------------------------------------------- */
     /*  Overloaded Operators                                             */
