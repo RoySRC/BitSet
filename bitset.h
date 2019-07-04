@@ -178,10 +178,31 @@ public:
     /*------------------------------------------------------------------------*/
     /* Increment/Decrement Operators */
     /*------------------------------------------------------------------------*/
-    inline bitset& operator++ ();
-    inline bitset& operator-- ();
-    inline bitset operator++ (int);
-    inline bitset operator-- (int);
+    inline bitset& operator++ () {
+        // pre-increment
+        TYPE* x = bit_array;
+        size_t N = bit_array_size;
+        for (uint64_t i=0, z=uint64_t(x[i])+1UL; i<N; z += uint64_t(x[++i])) {
+            x[i] = z;
+            z >>= 32;
+        }
+        return *this;
+    }
+
+    inline bitset& operator-- () {
+        // pre-decrement
+        return *this;
+    }
+    
+    inline bitset operator++ (int) {
+        // post-increment
+        return *this;
+    }
+    
+    inline bitset operator-- (int) {
+        // post-decrement
+        return *this;
+    }
     /*------------------------------------------------------------------------*/
 
     /*------------------------------------------------------------------------*/
@@ -227,8 +248,12 @@ public:
     /* Logical Operators */
     /*------------------------------------------------------------------------*/
     inline bool operator! () const;
-    inline bool operator&& () const;
-    inline bool operator|| () const;
+
+    template <typename T>
+    inline bool operator&& (const T& rhs) const;
+   
+    template <typename T>
+    inline bool operator|| (const T& rhs) const;
     /*------------------------------------------------------------------------*/
 
     /*------------------------------------------------------------------------*/
@@ -442,7 +467,7 @@ inline bool bitset::isEqualTo (const bitset& rhs, size_t len /* bits */) {
 }
 
 template <>
-inline bool bitset::operator== (const bitset& rhs) {
+inline bool bitset::operator== (const bitset& rhs) const {
     const size_t NB_BITS_RHS = rhs.nb_bits_;
 
     if (NB_BITS_RHS != nb_bits_) return false;

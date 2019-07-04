@@ -43,13 +43,13 @@ void  test_rshift () {
 
 int main (int argc, char** argv) {
     bitset bs (64), org (64);
-    auto val = 202335968067588;
+    auto val = -1;
     bs.set_value(val);
-    org.set_value(val);
+    bs.unset(12);
 
-    org.print();
-    bs.twos_complement();
-    bs.print();
-
-    cout << bs.to_int64() <<endl;
+    if (bs.to_uint64()+1 == (++bs).to_uint64()) {
+        cout << "Passed!" << endl;
+    } else {
+        cout << "Failed!" << endl;
+    }
 }
