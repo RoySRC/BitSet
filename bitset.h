@@ -134,18 +134,9 @@ public:
         return *this;
     }
 
-    template <typename T>
-    inline bitset& operator>>= (const T& rhs) {
-        printf("Function operator>>= needs implementation in %s : %d \n", __FILE__, __LINE__);
-        return *this;
-    }
-
-    template <typename T>
-    inline bitset& operator<<= (const T& rhs) {
-        printf("Function operator<<= needs implementation in %s : %d \n", __FILE__, __LINE__);
-        return *this;
-    }
-
+    /*------------------------------------------------------------------------*/
+    /* Assignment Operators */
+    /*------------------------------------------------------------------------*/
     template <typename T>
     inline bitset& operator= (const T& rhs) {
         reset();
@@ -153,9 +144,100 @@ public:
         return *this;
     }
 
+    template <typename T>
+    inline bitset& operator+= (const T& rhs);
+
+    template <typename T>
+    inline bitset& operator-= (const T& rhs);
+
+    template <typename T>
+    inline bitset& operator*= (const T& rhs);
+
+    template <typename T>
+    inline bitset& operator/= (const T& rhs);
+
+    template <typename T>
+    inline bitset& operator%= (const T& rhs);
+
+    template <typename T>
+    inline bitset& operator&= (const T& rhs);
+
+    template <typename T>
+    inline bitset& operator|= (const T& rhs);
+
+    template <typename T>
+    inline bitset& operator^= (const T& rhs);
+
+    template <typename T>
+    inline bitset& operator<<= (const T& rhs);
+
+    template <typename T>
+    inline bitset& operator>>= (const T& rhs);
+    /*------------------------------------------------------------------------*/
+
+    /*------------------------------------------------------------------------*/
+    /* Increment/Decrement Operators */
+    /*------------------------------------------------------------------------*/
+    inline bitset& operator++ ();
+    inline bitset& operator-- ();
+    inline bitset operator++ (int);
+    inline bitset operator-- (int);
+    /*------------------------------------------------------------------------*/
+
+    /*------------------------------------------------------------------------*/
+    /* Arithmetic Operators */
+    /*------------------------------------------------------------------------*/
+    inline bitset operator+ () const;
+    inline bitset operator- () const;
+
+    template <typename T>
+    inline bitset operator+ (const T& rhs) const;
+
+    template <typename T>
+    inline bitset operator- (const T& rhs) const;
+
+    template <typename T>
+    inline bitset operator* (const T& rhs) const;
+
+    template <typename T>
+    inline bitset operator/ (const T& rhs) const;
+
+    template <typename T>
+    inline bitset operator% (const T& rhs) const;
+
+    inline bitset operator~ () const;
+
+    template <typename T>
+    inline bitset operator& (const T& rhs) const;
+
+    template <typename T>
+    inline bitset operator| (const T& rhs) const;
+
+    template <typename T>
+    inline bitset operator^ (const T& rhs) const;
+
+    template <typename T>
+    inline bitset operator<< (const T& rhs) const;
+
+    template <typename T>
+    inline bitset operator>> (const T& rhs) const;
+    /*------------------------------------------------------------------------*/
+
+    /*------------------------------------------------------------------------*/
+    /* Logical Operators */
+    /*------------------------------------------------------------------------*/
+    inline bool operator! () const;
+    inline bool operator&& () const;
+    inline bool operator|| () const;
+    /*------------------------------------------------------------------------*/
+
+    /*------------------------------------------------------------------------*/
+    /* Comparison Operators */
+    /*------------------------------------------------------------------------*/
+
     /* is strictly equal to */
     template <typename T>
-    inline bool operator== (const T& rhs) {
+    inline bool operator== (const T& rhs) const {
         const size_t NB_BITS_RHS = sizeof(rhs)*8;
 
         if (NB_BITS_RHS != nb_bits_) return false;
@@ -167,6 +249,22 @@ public:
 
         return true;
     }
+
+    template <typename T>
+    inline bool operator!= (const T& rhs) const;
+
+    template <typename T>
+    inline bool operator< (const T& rhs) const;
+
+    template <typename T>
+    inline bool operator> (const T& rhs) const;
+
+    template <typename T>
+    inline bool operator<= (const T& rhs) const;
+
+    template <typename T>
+    inline bool operator>= (const T& rhs) const;
+    /*------------------------------------------------------------------------*/
 
     /* ----------------------------------------------------------------- */
 
@@ -349,8 +447,8 @@ inline bool bitset::operator== (const bitset& rhs) {
 
     if (NB_BITS_RHS != nb_bits_) return false;
 
-    for (size_t i=0; i<NB_BITS_RHS; ++i) {
-        if (at(i) != rhs.at(i))
+    for (size_t i=0; i<bit_array_size; ++i) {
+        if (bit_array[i] != rhs.bit_array[i])
             return false;
     }
 
