@@ -168,11 +168,12 @@ public:
     template <typename T>
     inline bitset& operator^= (const T& rhs);
 
-    template <typename T>
-    inline bitset& operator<<= (const T& rhs);
 
-    template <typename T>
-    inline bitset& operator>>= (const T& rhs);
+    inline bitset& operator<<= (const bitset& rhs);
+    inline bitset& operator<<= (const size_t rhs);
+
+    inline bitset& operator>>= (const bitset& rhs);
+    inline bitset& operator>>= (const size_t N);
     /*------------------------------------------------------------------------*/
 
     /*------------------------------------------------------------------------*/
@@ -182,7 +183,8 @@ public:
         // pre-increment
         TYPE* x = bit_array;
         size_t N = bit_array_size;
-        for (uint64_t i=0, z=uint64_t(x[i])+1UL; i<N; z += uint64_t(x[++i])) {
+        for (uint64_t i=0, z=1UL; i<N; ++i) {
+            z += uint64_t(x[i]);
             x[i] = z;
             z >>= 32;
         }
@@ -191,6 +193,13 @@ public:
 
     inline bitset& operator-- () {
         // pre-decrement
+        TYPE* x = bit_array;
+        size_t N = bit_array_size;
+        for (uint64_t i=0, z=0; i<N; ++i) {
+            z += uint64_t(TYPE(-1)) + uint64_t(x[i]);
+            x[i] = z;
+            z >>= 32;
+        }
         return *this;
     }
     

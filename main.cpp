@@ -52,4 +52,10 @@ int main (int argc, char** argv) {
     } else {
         cout << "Failed!" << endl;
     }
+
+    if (bs.to_uint64()-1 == (--bs).to_uint64()) {
+        cout << "Passed!" << endl;
+    } else {
+        cout << "Failed!" << endl;
+    }
 }
