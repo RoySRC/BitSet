@@ -45,6 +45,46 @@ class bitset {
     const size_t WORD_LEN = sizeof(TYPE) * 8;
     bool stack_storage = false;
 
+    /*------------------------------------------------------------------------*/
+
+    __forceinline__ void increment (void) {
+    	for (size_t i=0; i<bit_array_size; ++i) {
+			bit_array[i] += 1;
+			if (bit_array[i] != 0) return;
+		}
+    }
+
+    __forceinline__ void increment (const uint8_t rhs) {
+    	printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
+    	exit (-1);
+    }
+
+    __forceinline__ void increment (const uint16_t rhs) {
+		printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
+		exit (-1);
+	}
+
+    __forceinline__ void increment (const uint32_t rhs) {
+		printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
+		exit (-1);
+	}
+
+    __forceinline__ void increment (const uint64_t rhs) {
+		printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
+		exit (-1);
+	}
+
+    __forceinline__ void increment (const int8_t rhs)  { increment(rhs); }
+    __forceinline__ void increment (const int16_t rhs) { increment(rhs); }
+    __forceinline__ void increment (const int32_t rhs) { increment(rhs); }
+    __forceinline__ void increment (const int64_t rhs) { increment(rhs); }
+
+    __forceinline__ void increment (const bitset& rhs) {
+    	printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
+		exit (-1);
+    }
+
+    /*------------------------------------------------------------------------*/
 
 public:
 
@@ -103,10 +143,7 @@ public:
 
     inline void twos_complement (void) {
         _NOT_();
-        for (size_t i=0; i<bit_array_size; ++i) {
-            bit_array[i] += 1;
-            if (bit_array[i] != 0) break;
-        }
+        increment();
     }
 
     /* Convert to builtin integer types */
@@ -160,10 +197,16 @@ public:
     inline bitset& operator%= (const T& rhs);
 
     template <typename T>
-    inline bitset& operator&= (const T& rhs);
+    inline bitset& operator&= (const T& rhs) {
+        _AND_(rhs);
+        return *this;
+    }
 
     template <typename T>
-    inline bitset& operator|= (const T& rhs);
+    inline bitset& operator|= (const T& rhs) {
+        _OR_(rhs);
+        return *this;
+    }
 
     template <typename T>
     inline bitset& operator^= (const T& rhs);
@@ -181,13 +224,17 @@ public:
     /*------------------------------------------------------------------------*/
     inline bitset& operator++ () {
         // pre-increment
-        TYPE* x = bit_array;
-        size_t N = bit_array_size;
-        for (uint64_t i=0, z=1UL; i<N; ++i) {
-            z += uint64_t(x[i]);
-            x[i] = z;
-            z >>= 32;
-        }
+
+        // TYPE* x = bit_array;
+        // size_t N = bit_array_size;
+        // for (uint64_t i=0, z=1UL; i<N; ++i) {
+        //     z += uint64_t(x[i]);
+        //     x[i] = z;
+        //     z >>= 32;
+        // }
+
+        this->increment();
+        
         return *this;
     }
 
@@ -376,6 +423,13 @@ public:
         bit_array[bit_array_size-1] &= ~(TYPE(-1) << (nb_bits_ % WORD_LEN));
         // bit_array[bit_array_size-1] &= TYPE(pow(2, nb_bits_ % WORD_LEN)-1);
 
+    }
+
+    template <typename t>
+    inline void _XOR_ (const t& rhs) {
+        cout << __FILE__ << ":" << __LINE__ ;
+        cout << "Needs Implementation" << endl;
+        exit(-1);
     }
 
     inline void _NOT_ () {
