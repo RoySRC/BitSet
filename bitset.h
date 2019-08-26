@@ -31,7 +31,9 @@ using std::endl;
 }
 #define _print_bits_(t) __print__bits__main__(t, __LINE__)
 
+#ifndef __forceinline__
 #define __forceinline__ __attribute__((always_inline))
+#endif
 
 
 class bitset {
@@ -90,19 +92,10 @@ public:
 
     size_t _MAX_STACK_ALLOC_LIMIT = 32; /* bits */
 
-    __forceinline__ bitset (size_t nb_bits) {
-        nb_bits_ = nb_bits;
-        bit_array_size = 1 + nb_bits / WORD_LEN;
-        nb_bytes_ = sizeof(TYPE) * bit_array_size;
+    __forceinline__ bitset () {};
 
-        if (bit_array_size <= _MAX_STACK_ALLOC_LIMIT/WORD_LEN) {
-            bit_array = (TYPE*)alloca(nb_bytes_);
-            memset(bit_array, 0, nb_bytes_);
-            stack_storage = true;
-        } else {
-            bit_array = new TYPE [bit_array_size] ();
-            stack_storage = false;
-        }
+    __forceinline__ bitset (size_t nb_bits) {
+        init(nb_bits);
     }
 
     __forceinline__ bitset (const bitset& rhs) {
@@ -121,6 +114,22 @@ public:
             delete [] bit_array;
             bit_array = NULL;
         }
+    }
+
+    __forceinline__
+    inline void init (size_t nb_bits) {
+    	nb_bits_ = nb_bits;
+		bit_array_size = 1 + nb_bits / WORD_LEN;
+		nb_bytes_ = sizeof(TYPE) * bit_array_size;
+
+		if (bit_array_size <= _MAX_STACK_ALLOC_LIMIT/WORD_LEN) {
+			bit_array = (TYPE*)alloca(nb_bytes_);
+			memset(bit_array, 0, nb_bytes_);
+			stack_storage = true;
+		} else {
+			bit_array = new TYPE [bit_array_size] ();
+			stack_storage = false;
+		}
     }
 
 
