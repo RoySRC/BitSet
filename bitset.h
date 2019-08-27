@@ -56,30 +56,30 @@ class bitset {
 		}
     }
 
-    __forceinline__ void increment (const uint8_t rhs) {
+    __forceinline__ void increment_uint8_t (const uint8_t rhs) {
     	printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
     	exit (-1);
     }
 
-    __forceinline__ void increment (const uint16_t rhs) {
+    __forceinline__ void increment_uint16_t (const uint16_t rhs) {
 		printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
 		exit (-1);
 	}
 
-    __forceinline__ void increment (const uint32_t rhs) {
+    __forceinline__ void increment_uint32_t (const uint32_t rhs) {
 		printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
 		exit (-1);
 	}
 
-    __forceinline__ void increment (const uint64_t rhs) {
+    __forceinline__ void increment_uint64_t (const uint64_t rhs) {
 		printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
 		exit (-1);
 	}
 
-    __forceinline__ void increment (const int8_t rhs)  { increment(rhs); }
-    __forceinline__ void increment (const int16_t rhs) { increment(rhs); }
-    __forceinline__ void increment (const int32_t rhs) { increment(rhs); }
-    __forceinline__ void increment (const int64_t rhs) { increment(rhs); }
+    __forceinline__ void increment (const int8_t rhs)  { increment_uint8_t(rhs); }
+    __forceinline__ void increment (const int16_t rhs) { increment_uint16_t(rhs); }
+    __forceinline__ void increment (const int32_t rhs) { increment_uint32_t(rhs); }
+    __forceinline__ void increment (const int64_t rhs) { increment_uint64_t(rhs); }
 
     __forceinline__ void increment (const bitset& rhs) {
     	printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
@@ -487,8 +487,20 @@ public:
         return bit_array[i/WORD_LEN] & (1 << (i % WORD_LEN));
     }
 
-    void print() const;
-    void value_print() const;
+    void print() const {
+    	 for (size_t i=0; i<nb_bits_; ++i) {
+			cout << this->at(nb_bits_-1-i) ;
+		}
+		printf("\n");
+    }
+
+    void value_print() const {
+    	printf("[ ");
+		for (size_t i=0; i<bit_array_size; ++i) {
+			cout << bit_array[i] << " " ;
+		}
+		printf("]\n");
+    }
 
     // Getters
     inline size_t size() const { return nb_bits_; }
