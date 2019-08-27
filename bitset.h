@@ -90,7 +90,13 @@ class bitset {
 
 public:
 
+#if defined(__clang__)
+    size_t _MAX_STACK_ALLOC_LIMIT = 0; /* bits */
+#elif defined(__GNUC__) || defined(__GNUG__)
     size_t _MAX_STACK_ALLOC_LIMIT = 32; /* bits */
+#elif defined(_MSC_VER)
+    size_t _MAX_STACK_ALLOC_LIMIT = 0; /* bits */
+#endif
 
     __forceinline__ bitset () {};
 
