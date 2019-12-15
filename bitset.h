@@ -57,22 +57,22 @@ class bitset {
     }
 
     __forceinline__ void increment_uint8_t (const uint8_t rhs) {
-    	printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
+    	printf("%s : %d : Needs Implementation\n", __FILE__, __LINE__);
     	exit (-1);
     }
 
     __forceinline__ void increment_uint16_t (const uint16_t rhs) {
-		printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
+		printf("%s : %d : Needs Implementation\n", __FILE__, __LINE__);
 		exit (-1);
 	}
 
     __forceinline__ void increment_uint32_t (const uint32_t rhs) {
-		printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
+		printf("%s : %d : Needs Implementation\n", __FILE__, __LINE__);
 		exit (-1);
 	}
 
     __forceinline__ void increment_uint64_t (const uint64_t rhs) {
-		printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
+		printf("%s : %d : Needs Implementation\n", __FILE__, __LINE__);
 		exit (-1);
 	}
 
@@ -82,7 +82,7 @@ class bitset {
     __forceinline__ void increment (const int64_t rhs) { increment_uint64_t(rhs); }
 
     __forceinline__ void increment (const bitset& rhs) {
-    	printf("%s : %ld : Needs Implementation\n", __FILE__, __LINE__);
+    	printf("%s : %d : Needs Implementation\n", __FILE__, __LINE__);
 		exit (-1);
     }
 
