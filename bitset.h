@@ -511,7 +511,8 @@ public:
     // Getters
     inline size_t size() const { return nb_bits_; }
     inline size_t len()  const { return size();   }
-
+    inline size_t data_size() const { return bit_array_size; }
+    inline TYPE data (size_t i) const { return bit_array[i]; }
 
 };
 
